@@ -107,3 +107,67 @@ for each in data_dict:
             max = temp
 print "minimum salary:", min
 print "maximum salary:", max
+
+
+#------------------------------------------------------------------------------------------------------
+# FEATURE SCALING
+#------------------------------------------------------------------------------------------------------
+print "#########################################################################"
+print "#########################################################################"
+print "#########################################################################"
+
+def scale_values(data):
+    from sklearn import preprocessing
+
+    data_0 = []
+    data_1 = []
+    data_2 = []
+    
+    for each in data:
+        data_0.append(each[0])
+        data_1.append(each[1])
+        data_2.append(each[2])
+    
+    min_max_scaler = preprocessing.MinMaxScaler()
+    data_1_minmax = min_max_scaler.fit_transform(data_1)
+    print "scaled_salary:",min_max_scaler.transform([[200000.0]])
+    min_max_scaler = preprocessing.MinMaxScaler()
+    data_2_minmax = min_max_scaler.fit_transform(data_2)
+    print "scaled_options:",min_max_scaler.transform([[1000000.0]])
+
+feature_1 = "salary"
+feature_2 = "exercised_stock_options"
+#feature_3 = "total_payments"
+poi  = "poi"
+features_list = [poi, feature_1, feature_2]
+features_list = [poi, feature_1, feature_2]
+print "features_list:",features_list
+#features_list = [poi, feature_1, feature_2, feature_3]
+
+data = featureFormat(data_dict, features_list)
+data_minmax = scale_values(data)
+poi, finance_features = targetFeatureSplit(data_minmax)
+
+
+for f1, f2 in finance_features:
+    plt.scatter( f1, f2 )
+plt.show()
+
+#for f1, f2, f3 in finance_features:
+#    plt.scatter( f1, f2 )
+#plt.show()
+
+### cluster here; create predictions of the cluster labels
+### for the data and store them to a list called pred
+from sklearn.cluster import KMeans
+
+kmeans = KMeans(n_clusters=2, n_init=10).fit(finance_features)
+
+pred = kmeans.predict(finance_features)
+
+### rename the "name" parameter when you change the number of features
+### so that the figure gets saved to a different file
+try:
+    Draw(pred, finance_features, poi, mark_poi=False, name="clusters.pdf", f1_name=feature_1, f2_name=feature_2)
+except NameError:
+    print "no predictions object named pred found, no clusters to plot"
