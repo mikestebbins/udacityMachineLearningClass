@@ -47,3 +47,27 @@ for each in enron_data:
         
 print email_address
 print quantified_salary
+
+total_count = 0
+no_payments = 0
+for each in enron_data:
+    total_count = total_count + 1
+    if (enron_data[each]["total_payments"] == 'NaN'):
+        no_payments = no_payments + 1
+        
+print "total count:",total_count
+print "NaN total payments:",no_payments
+        
+no_payments = 0
+number_of_pois = 0
+for each in enron_data:
+    if (enron_data[each]["poi"] == True):
+        number_of_pois = number_of_pois + 1
+        print each
+        print enron_data[each]["total_payments"]
+        if (enron_data[each]["total_payments"] == 'NaN'):
+            no_payments = no_payments + 1
+            
+print "poi's:",number_of_pois   
+print "poi's with NaN total payments:",no_payments
+    
