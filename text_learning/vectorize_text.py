@@ -49,30 +49,19 @@ for name, from_person in [("sara", from_sara), ("chris", from_chris)]:
 
             ### use parseOutText to extract the text from the opened email
             text = parseOutText(email)
-#            print "type:",type(text)
-#            print text
-            
-#            text = text.encode('ascii','ignore')
-#            print "type:",type(text)
             
             ### use str.replace() to remove any instances of the words
-            ### ["sara", "shackleton", "chris", "germani"]
+            ### ["sara", "shackleton", "chris", "germani"]         
             
-            ###the below works, but isn't trimming the same for the right answer            
-#            stopwords = ["sara","shackleton","chris","germani"]            
-#            textwords = text.split()
-#            resultwords  = [word for word in textwords if word not in stopwords]
-#            text = ' '.join(resultwords)
-            
-            text1 = text.replace("sara", "")
-            text2 = text1.replace("shackleton", "") 
-            text3 = text2.replace("chris", "")
-            text4 = text3.replace("germani", "")             
+            stop_list = ["sara","shackleton","chris","germani","sshacklensf","cgermannsf"]
 
-#            print text
+            for each in stop_list:
+                text_temp = text.replace(each,"")
+                text = text_temp
             
             ### append the text to word_data
-            word_data.append(text4)
+            word_data.append(text)
+
 
             ### append a 0 to from_data if email is from Sara, and 1 if email is from Chris
             if name is "sara":

@@ -35,9 +35,33 @@ features_test  = vectorizer.transform(features_test).toarray()
 features_train = features_train[:150].toarray()
 labels_train   = labels_train[:150]
 
-
-
 ### your code goes here
+from sklearn import tree
+#clf = tree.DecisionTreeClassifier(min_samples_split=40)
+clf = tree.DecisionTreeClassifier()
 
+clf = clf.fit(features_train, labels_train)
 
+pred = clf.predict(features_test)
 
+from sklearn.metrics import accuracy_score
+print "accuracy score:",accuracy_score(pred, labels_test)
+
+i = 0
+for each in clf.feature_importances_:
+    if each >= 0.02:
+        print i, " / ", each
+    i = i + 1
+    
+## from the loop above, I see that the most "important" word is number 33614
+## find the value of that offending word
+#print vectorizer.get_feature_names()[33614]
+## this returns "sshacklensf"
+
+## add "sshacklensf" to the stopwords in vectorize_text, rerun all of this code
+## new outlier is number 14343
+print vectorizer.get_feature_names()[14343]
+## this returns "cgermannsf"
+
+## add "cgermannsf" to the stopwords in vectorize_text, rerun all of this code
+## any outliers? 
