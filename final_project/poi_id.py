@@ -7,6 +7,9 @@ sys.path.append("../tools/")
 from feature_format import featureFormat, targetFeatureSplit
 from tester import dump_classifier_and_data
 
+import numpy as np
+import matplotlib.pyplot as plt
+
 ### Task 1: Select what features you'll use.
 ### features_list is a list of strings, each of which is a feature name.
 ### The first feature must be "poi".
@@ -15,7 +18,55 @@ features_list = ['poi','salary'] # You will need to use more features
 ### Load the dictionary containing the dataset
 with open("final_project_dataset.pkl", "r") as data_file:
     data_dict = pickle.load(data_file)
-
+    
+### Explore the dataset
+### look at the number of entries != "NaN" for each of the data_dict keys
+print "#######################################################################"
+print "exploring the dataset"
+print "#######################################################################"
+data_dict_keys = list(data_dict['METTS MARK'].keys())
+for key in data_dict_keys:
+    NaN_count = 0
+    non_NaN_count = 0
+    maximum = -9999999999
+    minimum = 9999999999
+    values = []
+    
+    for each in data_dict:
+        value =  data_dict[each][key]
+        if value == "NaN":
+            NaN_count = NaN_count + 1
+        else:
+            non_NaN_count = non_NaN_count + 1
+            values.append(value)
+            if value > maximum:
+                maximum = value
+            if value < minimum:
+                minimum = value
+    
+    print "------------------------------------------------------------------"
+    print "key:",key
+    print "NaN_count:",NaN_count
+    print "non_NaN_count:",non_NaN_count
+    print "maximum:",maximum
+    print "minimum:",minimum
+    try:
+        print "median:",'{:.1f}'.format(np.median(values))
+    except:
+        print "median: NO MEDIAN"
+    try:
+        print "stdev:",'{:.1f}'.format(np.std(values))
+    except:
+        print "stdev: NO STDEV"
+    
+    try:
+        X = np.arange(non_NaN_count)
+        plt.scatter(X, values )
+        plt.ylabel(key)
+        plt.show()
+    except:
+        print "NO GRAPH TO SHOW"
+    
 ### Task 2: Remove outliers
 ### Task 3: Create new feature(s)
 ### Store to my_dataset for easy export below.
